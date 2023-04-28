@@ -61,6 +61,7 @@ func deleteExpense(c *gin.Context){
 	}
 	}
 }
+
 func deleteBudget(c *gin.Context){
 	var budget Budget
 	if c.ShouldBind(&budget) == nil {
@@ -68,6 +69,18 @@ func deleteBudget(c *gin.Context){
 			if item.ID == budget.ID {
 				budgets = append(budgets[:index], budgets[index+1:]...)
 				break
+			}
+	}
+	}
+}
+func updateBudget(c *gin.Context){
+	var budget Budget
+	if c.ShouldBind(&budget) == nil {
+		for index, item := range budgets {
+			if item.ID == budget.ID {
+				budgets = append(budgets[:index], budgets[index+1:]...)
+				budget.ID = item.ID
+				budgets = append(budgets, budget)
 			}
 	}
 	}
@@ -90,6 +103,7 @@ func main()  {
 	router.POST("/createExpense", createExpense)
 	router.DELETE("/deleteExpense", deleteExpense)
 	router.DELETE("/deleteBudget", deleteBudget)
+	router.PUT("/updateBudget", updateBudget)
 
 	router.Run()
 }
